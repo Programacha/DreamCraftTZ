@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fbdb9dc3b24cf28153dfe14745f148, type: 3}
   m_Name: AWP
   m_EditorClassIdentifier: 
+  _fireModeType: 1
   _weaponSprite: {fileID: 21300000, guid: e801f2ba888ca2a4da5fe10e6dbf5a1e, type: 3}
   _shootsInOneSecond: 0.5
   _bullet: {fileID: 4728298694050713291, guid: f8546c5a6ea211a4785c782b930ba8f2, type: 3}

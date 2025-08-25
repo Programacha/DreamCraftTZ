@@ -8,13 +8,13 @@ namespace _Sripts.Player
 
     public class PlayerBehaviour : MonoBehaviour
     {
-        public event Action OnPlayerDeath;
+        public event Action<int> OnPlayerTakeDamage;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent<ZombieBehaviour>(out ZombieBehaviour zombie))
             {
-                OnPlayerDeath?.Invoke();
+                OnPlayerTakeDamage?.Invoke(zombie.Damage);
             }
         }
     }

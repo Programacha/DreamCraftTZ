@@ -12,6 +12,8 @@ namespace ZombieGeneratorBehaviour
     public class ZombieBehaviour : MonoBehaviour
     {
         public event Action<int,int> OnZombieTakeDamage;
+
+        public int Damage => _damage;
         
         [Header("Zombie Stats")]
 
@@ -21,6 +23,8 @@ namespace ZombieGeneratorBehaviour
         protected int _healPoint;
         [SerializeField]
         protected Sprite _zombieSprite;
+        [SerializeField]
+        protected int _damage;
 
         protected Transform _player;
         private SpriteRenderer _sprite;

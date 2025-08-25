@@ -9,16 +9,18 @@ namespace GameSystem
         public event Action OnGamePlayed;
         public event Action OnGameEnded;
         
-        [SerializeField] private PlayerBehaviour _player;
+        [SerializeField] private PlayerHealthController _playerHealthController;
         
         private SceneController _sceneController;
 
         public bool IsGame { get; private set; }
 
-        public void Initialize(SceneController sceneController)
+        public void Initialize(SceneController sceneController,PlayerHealthController playerHealthController)
         {
             IsGame = false;
+            _playerHealthController = playerHealthController;
             _sceneController = sceneController;
+            SubscribeEvents();
         }
 
         public void StartGame()
@@ -32,14 +34,14 @@ namespace GameSystem
             _sceneController.ReloadGameScene();
         }
 
-        private void OnEnable()
+        private void SubscribeEvents()
         {
-            _player.OnPlayerDeath += GameOver;
+            _playerHealthController.OnPlayerDeath += GameOver;
         }
 
-        private void OnDisable()
+        private void UnsubscribeEvents()
         {
-            _player.OnPlayerDeath -= GameOver;
+            _playerHealthController.OnPlayerDeath -= GameOver;
         }
         
         private void GameOver()

@@ -1,6 +1,7 @@
 using GameSystem;
 using UnityEngine;
 using _Sripts.InputHandler;
+using _Sripts.Player;
 using ObjectPoolSystem;
 using WeaponControl;
 using ZombieGeneratorBehaviour;
@@ -10,9 +11,10 @@ namespace _Sripts
     public class Startup : MonoBehaviour
     {
         [SerializeField] private GameSettings _gameSettings;
-        [SerializeField] private Transform _player;
+        [SerializeField] private PlayerBehaviour _player;
         [SerializeField] private SpriteRenderer _weaponSpriteRenderer;
-        [SerializeField]private GameStateUpdater _gameStateUpdater;
+        [SerializeField] private GameStateUpdater _gameStateUpdater;
+        [SerializeField] private PlayerHealthView _playerHealthView;
         
         private DesktopInput _desktopInput;
         private PlayerMovementController _playerMovementController;
@@ -24,6 +26,7 @@ namespace _Sripts
         private ZombieFactory _zombieFactory;
         private ZombieGeneratorParameters _zombieGeneratorParameters;
         private SceneController _sceneController;
+        private PlayerHealthController _playerHealthController;
 
         private void Awake()
         {
@@ -44,12 +47,12 @@ namespace _Sripts
             _desktopInput = new DesktopInput(_gameSettings);
            
             _playerMovementController = new PlayerMovementController
-                (_player,
+                (_player.transform,
                     _gameSettings.PlayerMoveSpeed);
             
             _weaponHandler = new WeaponHandler
             (
-                    _player,
+                    _player.transform,
                     _gameSettings.WeaponDistanceFromPlayer,
                     _gameSettings,
                     _weaponSpriteRenderer);
@@ -73,17 +76,21 @@ namespace _Sripts
             _zombieFactory = new ZombieFactory
                 (_objectPoolOrganizer,
                     _gameSettings.ZombiePrefabs,
-                    _player);
+                    _player.transform);
             
             _zombieGeneratorParameters = new ZombieGeneratorParameters
             (_gameStateUpdater,
                 _gameSettings.BaseTimeToSpawnNewZombie,
                 _zombieFactory);
+
+            _playerHealthController = new PlayerHealthController
+                (_gameSettings, _player);
         }
 
         private void Initializing()
         {
-            _gameStateUpdater.Initialize(_sceneController);
+            _gameStateUpdater.Initialize(_sceneController,_playerHealthController);
+            _playerHealthView.Initialize(_playerHealthController);
             _inputController.Initialize();
             _objectPoolOrganizer.Initialize();
             _bulletFabric.Initialize();
@@ -91,6 +98,7 @@ namespace _Sripts
             _zombieFactory.Initialize();
             _zombieGeneratorParameters.Initialize();
             _weaponHandler.Initialization();
+            _playerHealthController.Initialization();
         }
 
         private void Update()

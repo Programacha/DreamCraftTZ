@@ -1,6 +1,7 @@
 ﻿using System;
 using GameSystem;
 using UnityEngine;
+using WeaponControl.FireModes;
 
 namespace WeaponControl
 {
@@ -37,7 +38,15 @@ namespace WeaponControl
             if (!(Time.time >= _shootInSecond)) 
                 return;
             _shootInSecond = Time.time + _shootsInOneSeconds;
-            _bulletFabric.Shot();
+            
+            IFireMode fireMode = _weaponHandler.WeaponFireMode switch
+            {
+                FireModeType.Single => new SingleShotMode(),
+                FireModeType.Shotgun => new ShotgunMode(3, 10f),
+                _ => new SingleShotMode()
+            };
+
+            _bulletFabric.Shot(fireMode);
         }
 
         private void SubscribeEvents()

@@ -10,7 +10,9 @@ namespace WeaponControl
         public float ShootsInOneSecond => _shootsInOneSecond;
         public BaseBullet BaseBullet => _bullet;
         public int Damage => _damage;
+        public FireModeType FireMode => _fireModeType;
 
+        [SerializeField] private FireModeType _fireModeType;
         [SerializeField]private Sprite _weaponSprite;
         [SerializeField]private float _shootsInOneSecond;
         [SerializeField]private BaseBullet _bullet;

@@ -22,6 +22,7 @@ namespace GameSystem
         public Weapon[] Weapon;
         public float WeaponDistanceFromPlayer;
         public float PlayerMoveSpeed;
+        public int PlayerHealth;
 
         [Space(10)]
 

@@ -35,6 +35,16 @@ namespace WeaponControl
                 return _currentWeapon.ShootsInOneSecond;
             }
         }
+        
+        public FireModeType WeaponFireMode
+        {
+            get
+            {
+                if (_currentWeapon == null)
+                    return FireModeType.Single ;
+                return _currentWeapon.FireMode;
+            }
+        }
 
         public WeaponHandler(Transform player, float weaponDistanceFromPlayer,GameSettings gameSettings,SpriteRenderer weapon)
         {

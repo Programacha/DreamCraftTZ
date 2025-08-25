@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System;
-using HelpUtilities;
+﻿using HelpUtilities;
 using ObjectPoolSystem;
+using UnityEngine;
+using WeaponControl.FireModes;
 
 namespace WeaponControl
 {
@@ -24,30 +24,24 @@ namespace WeaponControl
             _objectPool = _objectPoolOrganizer.GetPool(_bullet.gameObject.name);
         }
 
-        public void Shot()
+        public void Shot(IFireMode fireMode)
         {
-            BulletSetUp(TakeBulletFromPool());
+            fireMode.Shoot(this);
         }
 
-        private Vector2 DirectionDefine()
+        public Vector2 DirectionDefine()
         {
             return (Utilities.GetWorldMousePosition() - _weaponHandler.Weapon.transform.position).normalized;
         }
 
-        private GameObject TakeBulletFromPool()
+        public void SpawnBullet(Vector2 direction)
         {
             GameObject bulletObject = _objectPool.GetObject().gameObject;
-            if (bulletObject == null)
-                return null;
-            return bulletObject;
-        }
+            if (bulletObject == null) return;
 
-        private void BulletSetUp(GameObject bullet)
-        {
-            bullet.SetActive(true);
-            BaseBullet baseBullet = bullet.GetComponent<BaseBullet>();
-            baseBullet.StartMoveBullet(_weaponHandler.Weapon.transform.position,DirectionDefine(), _weaponHandler.BulletDamage);
+            bulletObject.SetActive(true);
+            BaseBullet baseBullet = bulletObject.GetComponent<BaseBullet>();
+            baseBullet.StartMoveBullet(_weaponHandler.Weapon.transform.position, direction, _weaponHandler.BulletDamage);
         }
     }
 }
-

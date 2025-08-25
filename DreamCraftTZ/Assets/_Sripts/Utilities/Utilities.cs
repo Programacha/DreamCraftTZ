@@ -13,18 +13,39 @@ namespace  HelpUtilities
 
         public static Vector3 GetInvisiblePoint()
         {
-            Vector3 topLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, Camera.main.transform.position.z));
-            Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Camera.main.transform.position.z));
-            float randomX;
-            float randomY = topLeft.y; 
-            int side = Random.Range(0, 3);
-            randomX = side switch
+            Camera cam = Camera.main;
+
+            Vector3 topLeft     = cam.ViewportToWorldPoint(new Vector3(0, 1, cam.nearClipPlane));
+            Vector3 topRight    = cam.ViewportToWorldPoint(new Vector3(1, 1, cam.nearClipPlane));
+            Vector3 bottomLeft  = cam.ViewportToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
+            Vector3 bottomRight = cam.ViewportToWorldPoint(new Vector3(1, 0, cam.nearClipPlane));
+
+            int side = Random.Range(0, 4);
+            float randomX = 0f;
+            float randomY = 0f;
+
+            switch (side)
             {
-                0 => topLeft.x - Random.Range(0.5f, 1f),
-                1 => topRight.x + Random.Range(0.5f, 1f),
-                2 => Random.Range(topLeft.x, topRight.x),
-                _ => Random.Range(topLeft.x, topRight.x)
-            };
+                case 0: 
+                    randomX = bottomLeft.x - Random.Range(0.5f, 1f);
+                    randomY = Random.Range(bottomLeft.y, topLeft.y);
+                    break;
+
+                case 1: 
+                    randomX = bottomRight.x + Random.Range(0.5f, 1f);
+                    randomY = Random.Range(bottomRight.y, topRight.y);
+                    break;
+
+                case 2:
+                    randomX = Random.Range(topLeft.x, topRight.x);
+                    randomY = topLeft.y + Random.Range(0.5f, 1f);
+                    break;
+
+                case 3: 
+                    randomX = Random.Range(bottomLeft.x, bottomRight.x);
+                    randomY = bottomLeft.y - Random.Range(0.5f, 1f);
+                    break;
+            }
             return new Vector3(randomX, randomY, 0);
         }
     }

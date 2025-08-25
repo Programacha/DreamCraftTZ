@@ -190,3 +190,4 @@ MonoBehaviour:
   _speed: 2
   _healPoint: 3
   _zombieSprite: {fileID: -6056987297122131021, guid: cd947491a13509945aa1b644f9db3ef2, type: 3}
+  _damage: 2
